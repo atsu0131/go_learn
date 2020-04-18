@@ -1,0 +1,53 @@
+version: '3'
+services:
+  vue:
+    build:
+      context: ./docker/vue
+    container_name: myapp-vue
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+    command: sh -c "cd assets && npm install && npm run serve"
+
+  go:
+    build:
+      context: ./docker/go
+    container_name: myapp-go
+    ports:
+      - 8082:8082
+    volumes:
+      - .:/go/src
+    working_dir: /go/src/app
+    tty: true
+    command: fresh
+  nginx:
+    image: nginx
+    depends_on:
+    - go
+    container_name: myapp-nginx
+    ports:
+      - 80:80
+    environment:
+    - TZ=Asia/Tokyo
+    volumes:
+    - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+
+  db:
+    container_name: test_db # わかりやすいコンテナ名にしておく（任意）
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password # 従来の認証方式にしておく
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./logs:/var/log/mysql
+    environment:
+      - MYSQL_DATABASE=test_todo
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Tokyo
+    ports:
+      - 3307:3306
+volumes: # データの永続化
+  db-store:
