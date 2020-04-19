@@ -17,7 +17,7 @@ func main () {
 		//  // ルーティング
 		e.GET("/", handler.MainPage())
     // Routes
-    // e.GET("/users", handler.ListUser)
+    e.GET("/users", handler.ListUser)
     // e.GET("/users/:id", handler.GetUser)
     e.POST("/users", handler.CreateUser)
     // e.PUT("/users/:id", handler.UpdateUser)
