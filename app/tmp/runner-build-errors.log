@@ -1,0 +1,3 @@
+# app
+./main.go:13:12: undefined: middleware
+./main.go:14:12: undefined: middleware

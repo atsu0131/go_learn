@@ -1,17 +1,24 @@
 package main
 
 import (
-       "net/http"
-       "github.com/labstack/echo"
+      //  "net/http"
+			 "github.com/labstack/echo"
+			 "app/handler"
 )
 
 func main () {
-     e := echo.New()
-     e.GET("/", func(c echo.Context) error {
-        return c.String(http.StatusOK, "Hello, World!")
-     })
-     e.Logger.Fatal(e.Start(":8082"))
-     // e.Startの中はdocker-composeのgoコンテナで設定したportsを指定してください。
+		 e := echo.New()
+		 
+		     // Middleware
+				 e.Use(middleware.Logger())
+				 e.Use(middleware.Recover())
+		 
+		    //  // ルーティング
+				 e.GET("/", handler.MainPage())
+
+				//  // サーバー起動
+				// e.Startの中はdocker-composeのgoコンテナで設定したportsを指定してください。
+				 e.Logger.Fatal(e.Start(":8082"))
 }
 
 // package main
