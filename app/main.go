@@ -3,22 +3,29 @@ package main
 import (
       //  "net/http"
 			 "github.com/labstack/echo"
+			 "github.com/labstack/echo/middleware"
 			 "app/handler"
 )
 
 func main () {
-		 e := echo.New()
+		e := echo.New()
 		 
-		     // Middleware
-				 e.Use(middleware.Logger())
-				 e.Use(middleware.Recover())
+		// Middleware
+		e.Use(middleware.Logger())
+		e.Use(middleware.Recover())
 		 
-		    //  // ルーティング
-				 e.GET("/", handler.MainPage())
+		//  // ルーティング
+		e.GET("/", handler.MainPage())
+    // Routes
+    // e.GET("/users", handler.ListUser)
+    // e.GET("/users/:id", handler.GetUser)
+    e.POST("/users", handler.CreateUser)
+    // e.PUT("/users/:id", handler.UpdateUser)
+    // e.DELETE("/users/:id", handler.DeleteUser)
 
-				//  // サーバー起動
-				// e.Startの中はdocker-composeのgoコンテナで設定したportsを指定してください。
-				 e.Logger.Fatal(e.Start(":8082"))
+	//  // サーバー起動
+	// e.Startの中はdocker-composeのgoコンテナで設定したportsを指定してください。
+		e.Logger.Fatal(e.Start(":8082"))
 }
 
 // package main
